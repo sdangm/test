@@ -10,18 +10,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/test$Unittests_in_test.coverage" NAME="Unittests in test Coverage Results" MODIFIED="1538644526046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/test$Unittests_in_test.coverage" NAME="Unittests in test Coverage Results" MODIFIED="1538658085921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="test1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="172" column="34" selection-start-line="172" selection-start-column="34" selection-end-line="172" selection-end-column="34" />
-              <folding>
-                <element signature="e#3620#4981#0" />
-              </folding>
+            <state relative-caret-position="457">
+              <caret line="152" column="34" selection-start-line="152" selection-start-column="34" selection-end-line="152" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -59,7 +56,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="373" />
     <option name="y" value="31" />
     <option name="width" value="1400" />
@@ -139,34 +136,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 42m 47s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 22m 03s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 43m 59s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 22m 26s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 44m 30s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 23m 46s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 44m 45s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 23m 54s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 45m 19s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 25m 10s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 45m 41s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 57m 59s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 46m 58s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 58m 28s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 47m 08s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 15h 59m 40s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 11h 47m 45s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 16h 01m 18s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test - 2018.10.04 at 12h 15m 26s.xml">
+    <history-entry file="Unittests_in_test - 2018.10.04 at 16h 01m 26s.xml">
       <configuration name="Unittests in test" configurationId="tests" />
     </history-entry>
   </component>
@@ -179,7 +176,7 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27877507" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.29461458" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18020834" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
@@ -213,9 +210,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1139">
           <caret line="67" column="27" selection-start-line="67" selection-start-column="27" selection-end-line="67" selection-end-column="27" />
-          <folding>
-            <element signature="e#3620#4981#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -235,11 +229,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="172" column="34" selection-start-line="172" selection-start-column="34" selection-end-line="172" selection-end-column="34" />
-          <folding>
-            <element signature="e#3620#4981#0" />
-          </folding>
+        <state relative-caret-position="457">
+          <caret line="152" column="34" selection-start-line="152" selection-start-column="34" selection-end-line="152" selection-end-column="34" />
         </state>
       </provider>
     </entry>

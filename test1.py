@@ -13,8 +13,9 @@ import collections
 
 
 class Neuron:
-    def __init__(self, pLayerType, pLayer, pIndex):
+    def __init__(self, pLayerType, pLayer, pIndex, pGlobalIndex):
         self.index = pIndex
+        self.globalIndex=pGlobalIndex
         self.layer = pLayer
         self.layerType = pLayerType
         self.inputValue = 0
@@ -90,7 +91,7 @@ class NeuronList(collections.MutableSequence):
 
     def __print__(self):
         for __index__  in range(1,self.__len__()):
-            print('InputValue='+str(self.__getitem__(__index__).inputValue)+' '+' OutputValue='+str(self.__getitem__(__index__).outputValue))
+            print('GlobalIndex='+str(self.__getitem__(__index__).globalIndex)+' '+'InputValue='+str(self.__getitem__(__index__).inputValue)+' '+' OutputValue='+str(self.__getitem__(__index__).outputValue))
 
 
 
@@ -128,47 +129,50 @@ class WeightList(collections.MutableSequence):
 class NeuralNetwork:
     neuronList = NeuronList()
     weightList = WeightList()
-    def __init__(self, pCountIndexInLayer, nCountInternalLayer):
-
+    def __init__(self, pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron):
+        pGlobalIndex=0
         print('Начало циклов')
-        for nvIndex in range(nCountInternalLayer+2): #Это цикл по слоям
+        for nvIndex in range(nCountInternalLayer+2): #Это цикл по слоям (0...N)
             if nvIndex ==0:
-                layerType_1='Input'
-                layerType_2 = 'Internal'
+                layerType='Input'
             elif nvIndex==nCountInternalLayer+1: #Это выходной слой
-                layerType_1 ='Internal'
-                layerType_2='Output'
+                layerType='Output'
             else:
-                layerType_1 ='Internal'
-                layerType_2='Internal'
+                layerType ='Internal'
 
-            print('  Слой № '+str(nvIndex)+' ' + str(layerType_1) + ' ' + str(layerType_2))
+            print('  Слой № '+str(nvIndex)+' ' + str(layerType))
 
             for i in range(pCountIndexInLayer): #1..3 d нашем случае
-                print('     Индекс № ' + str(i))
-                neuron_1 = Neuron(layerType_1, nvIndex, i)
-                neuron_2 = Neuron(layerType_2, nvIndex+1, i)
+                    pGlobalIndex = pGlobalIndex + 1
+                    print('     Слой '+str(nvIndex) +' Индекс № ' + str(i)+ ' globaIndex='+str(pGlobalIndex))
+                    neuron = Neuron(layerType, nvIndex, i, pGlobalIndex)
+                    #-->
+                    neuron.inputValue=10*pGlobalIndex
+                    #--<
+                    self.neuronList.append(neuron)
+                    if layerType=='Output':
+                        break
 
-                self.neuronList.append(neuron_1)
-                self.neuronList.append(neuron_2)
+        #Создаем не созданные веса
 
-                weight = Weight(nvIndex, i, i)
-                self.weightList.append(weight)
-                #Создаем не созданные веса
+        for nvIndex in range(nCountInternalLayer + 2):  #Это цикл по слоям (0...N)
+            for j in range(pCountIndexInLayer): #Цикл по "всем" узлам внутри слоя
+                if bHaveMovNeuron==False or j<pCountIndexInLayer:
+                    for k in range(pCountIndexInLayer):
+                        if bHaveMovNeuron == False or k < pCountIndexInLayer:
 
-                for j in range(nCountInternalLayer+2-1):
-                    if i!=j:
-                        weight = Weight(nvIndex, i, j)
-                        self.weightList.append(weight)
-                # Это выходной слой, то после первой же итерации выходим
-                if nvIndex == nCountInternalLayer + 1:
-                    return
+                    weight = Weight(nvIndex, i, j)
+                    self.weightList.append(weight)
+
 
 
 
 nn=NeuralNetwork(3, 1)
 
 nn.neuronList.__print__()
-nn.weightList.__print__()
+print(nn.neuronList.__len__())
+#nn.weightList.__print__()
 # Попытаемся залить новые значения
-nn.neuronList.__setitem__()
+collections.OrderedDict(sorted(nn.neuronList, key=lambda t: t[0]))
+print('-----------------------')
+nn.neuronList.__print__()
