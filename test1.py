@@ -37,6 +37,9 @@ class Neuron:
     def __SetOutputValue__(self, pOutputValue):
         self.outputValue = pOutputValue
 
+    def __Print__(self):
+        print('globalIndex='+str(self.globalIndex)+' inputValue='+str(self.inputValue)+' outputValue='+str(self.outputValue))
+
 
 class Weight:
     def __init__(self, pLeftlayer, pIndexInLayerL, pIndexInLayerR):
@@ -46,8 +49,10 @@ class Weight:
         self.value = 0
 
     def __SetValue__(self, pValue):
-        self.Value = pValue
+        self.value = pValue
 
+    def __Print__(self):
+        print('Leftlayer='+str(self.leftLayer)+' pIndexInLayerL='+str(self.indexInLayerL)+' pIndexInLayerR='+str(self.indexInLayerR))
 
 
 def indexing_decorator(func):
@@ -127,9 +132,10 @@ class WeightList(collections.MutableSequence):
 
 
 class NeuralNetwork:
-    neuronList = NeuronList()
-    weightList = WeightList()
+
     def __init__(self, pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron):
+        self.neuronList = NeuronList()
+        self.weightList = WeightList()
         pGlobalIndex=0
         print('Начало циклов')
         for nvIndex in range(nCountInternalLayer+2): #Это цикл по слоям (0...N)
@@ -157,22 +163,37 @@ class NeuralNetwork:
 
         for nvIndex in range(nCountInternalLayer + 2):  #Это цикл по слоям (0...N)
             for j in range(pCountIndexInLayer): #Цикл по "всем" узлам внутри слоя
+                #Если для сети задан нейрон смещения и - это он (последний на слое, то обрабатываем по особенному
                 if bHaveMovNeuron==False or j<pCountIndexInLayer:
+                    # Пробегаем по всем нейронам слоя текущий +1 для создания связий текущего нейрона со всеми нейронами следующего слоя
                     for k in range(pCountIndexInLayer):
                         if bHaveMovNeuron == False or k < pCountIndexInLayer:
+                            weight = Weight(nvIndex, j, k)
+                            #->
+                            #weight.__Print__()
+                            #-<
+                            self.weightList.append(weight)
+                            print(weight.indexInLayerL)
 
-                    weight = Weight(nvIndex, i, j)
-                    self.weightList.append(weight)
+    def __runCalc__(self, pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron):
+        #функция расчета
+        for nvIndex in range(1, nCountInternalLayer + 2):  #Это цикл по слоям (1...N), те не включая входной слой
+            for j in range(pCountIndexInLayer): #Цикл по "всем" узлам внутри слоя
+                print(self.neuronList.__getitem__((nvIndex+1)*(j+1))) #Привели к глобальному индексу и нашли значение
+                print(self.neuronList.)
 
 
 
 
-nn=NeuralNetwork(3, 1)
 
-nn.neuronList.__print__()
-print(nn.neuronList.__len__())
+
+nn=NeuralNetwork(3, 1, False)
+print('-----------------------')
+nn.__runCalc__(3, 1, False)
+#nn.neuronList.__print__()
+#print(nn.neuronList.__len__())
 #nn.weightList.__print__()
 # Попытаемся залить новые значения
-collections.OrderedDict(sorted(nn.neuronList, key=lambda t: t[0]))
-print('-----------------------')
-nn.neuronList.__print__()
+#collections.OrderedDict(sorted(nn.neuronList, key=lambda t: t[0]))
+#print('-----------------------')
+#nn.neuronList.__print__()
