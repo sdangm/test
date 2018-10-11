@@ -42,10 +42,16 @@ class Neuron:
 
 
 class Weight:
-    def __init__(self, pLeftlayer, pIndexInLayerL, pIndexInLayerR):
+    leftLayer=0
+    indexInLayerL=0
+    indexInLayerR=0
+    value=0
+    def __init__(self, pLeftlayer, pIndexInLayerL, pIndexInLayerR, plGlobalIndex, prGlobalIndex):
         self.leftLayer = pLeftlayer
         self.indexInLayerL = pIndexInLayerL
         self.indexInLayerR = pIndexInLayerR
+        self.lGlobalIndex=plGlobalIndex
+        self.rGlobalIndex=prGlobalIndex
         self.value = 0
 
     def __SetValue__(self, pValue):
@@ -68,74 +74,11 @@ def indexing_decorator(func):
     return decorated
 
 
-class NeuronList(collections.MutableSequence):
-    def __init__(self):
-        self._inner_list = list()
-
-    def __len__(self):
-        return len(self._inner_list)
-
-    @indexing_decorator
-    def __delitem__(self, index):
-        self._inner_list.__delitem__(index)
-
-    @indexing_decorator
-    def insert(self, index, value):
-        self._inner_list.insert(index, value)
-
-    @indexing_decorator
-    def __setitem__(self, index, value):
-        self._inner_list.__setitem__(index, value)
-
-    @indexing_decorator
-    def __getitem__(self, index):
-        return self._inner_list.__getitem__(index)
-
-    def append(self, value):
-        self.insert(len(self) + 1, value)
-
-    def __print__(self):
-        for __index__  in range(1,self.__len__()):
-            print('GlobalIndex='+str(self.__getitem__(__index__).globalIndex)+' '+'InputValue='+str(self.__getitem__(__index__).inputValue)+' '+' OutputValue='+str(self.__getitem__(__index__).outputValue))
-
-
-
-class WeightList(collections.MutableSequence):
-    def __init__(self):
-        self._inner_list = list()
-
-    def __len__(self):
-        return len(self._inner_list)
-
-    @indexing_decorator
-    def __delitem__(self, index):
-        self._inner_list.__delitem__(index)
-
-    @indexing_decorator
-    def insert(self, index, value):
-        self._inner_list.insert(index, value)
-
-    @indexing_decorator
-    def __setitem__(self, index, value):
-        self._inner_list.__setitem__(index, value)
-
-    @indexing_decorator
-    def __getitem__(self, index):
-        return self._inner_list.__getitem__(index)
-
-    def append(self, value):
-        self.insert(len(self) + 1, value)
-
-    def __print__(self):
-        for __index__  in range(1,self.__len__()):
-            print('leftLayer='+str(self.__getitem__(__index__).leftLayer)+' indexInLayerL='+str(self.__getitem__(__index__).indexInLayerL)+' indexInLayerR='+str(self.__getitem__(__index__).indexInLayerR)+' value='+str(self.__getitem__(__index__).value))
-
-
-class NeuralNetwork:
-
+class NeuronList:
+    #Создаим
+    list=[]
+    count = 0
     def __init__(self, pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron):
-        self.neuronList = NeuronList()
-        self.weightList = WeightList()
         pGlobalIndex=0
         print('Начало циклов')
         for nvIndex in range(nCountInternalLayer+2): #Это цикл по слоям (0...N)
@@ -146,41 +89,90 @@ class NeuralNetwork:
             else:
                 layerType ='Internal'
 
-            print('  Слой № '+str(nvIndex)+' ' + str(layerType))
+            vStr='  Слой № '+str(nvIndex)+' ' + str(layerType)
 
             for i in range(pCountIndexInLayer): #1..3 d нашем случае
-                    pGlobalIndex = pGlobalIndex + 1
-                    print('     Слой '+str(nvIndex) +' Индекс № ' + str(i)+ ' globaIndex='+str(pGlobalIndex))
+                    print(vStr+' '+str(nvIndex) +' Индекс № ' + str(i)+ ' globaIndex='+str(pGlobalIndex))
                     neuron = Neuron(layerType, nvIndex, i, pGlobalIndex)
                     #-->
                     neuron.inputValue=10*pGlobalIndex
                     #--<
-                    self.neuronList.append(neuron)
+                    self.list.append(neuron)
+                    pGlobalIndex = pGlobalIndex + 1
                     if layerType=='Output':
                         break
+        self.count=pGlobalIndex
 
-        #Создаем не созданные веса
+    def getFirstGlobalIndexInLayer(self, pLayer):
+        for globalIndex in range(self.count):
+            if self.list[globalIndex].layer==pLayer:
+                return globalIndex
 
-        for nvIndex in range(nCountInternalLayer + 2):  #Это цикл по слоям (0...N)
-            for j in range(pCountIndexInLayer): #Цикл по "всем" узлам внутри слоя
-                #Если для сети задан нейрон смещения и - это он (последний на слое, то обрабатываем по особенному
-                if bHaveMovNeuron==False or j<pCountIndexInLayer:
+
+class WeightList:
+    list=[]
+    def __init__(self, pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron):
+        # Создаем веса
+        for nvIndex in range(nCountInternalLayer + 2):  # Это цикл по слоям (0...N)
+            for j in range(pCountIndexInLayer):  # Цикл по "всем" узлам внутри слоя
+                # #Для получения глобального номера используем слудующую формулу globalInxex=(№Слой-1)*Коичество узлов в слое+№ узла в текущем слое
+                currentGlobalIndex=((nvIndex-1)*pCountIndexInLayer+j)
+                # Если для сети задан нейрон смещения и - это он (последний на слое, то обрабатываем по особенному
+                if bHaveMovNeuron == False or j < pCountIndexInLayer:
                     # Пробегаем по всем нейронам слоя текущий +1 для создания связий текущего нейрона со всеми нейронами следующего слоя
                     for k in range(pCountIndexInLayer):
                         if bHaveMovNeuron == False or k < pCountIndexInLayer:
-                            weight = Weight(nvIndex, j, k)
-                            #->
-                            #weight.__Print__()
-                            #-<
-                            self.weightList.append(weight)
+                            kGlobalIndex=(nvIndex  * pCountIndexInLayer + k)
+
+                            weight = Weight(nvIndex, j, k, currentGlobalIndex, kGlobalIndex)
+                            # ->
+                            # weight.__Print__()
+                            # -<
+                            self.list.append(weight)
                             print(weight.indexInLayerL)
+
+##Поиск индекса по списку значений с условиями отбора
+     def findIndexByParams(self, pLeftGlobalIndex, pGlobalIndex, pLayer):
+         if pLayer is None:
+             #Если начальный уровень не задан, то ищем по всему диапозону значений
+             for index in range(pCountIndexInLayer, self.nl.count):
+                 if self.wl.list[index]
+
+
+
+    def __print__(self):
+        for __index__  in range(1,self.__len__()):
+            print('leftLayer='+str(self.__getitem__(__index__).leftLayer)+' indexInLayerL='+str(self.__getitem__(__index__).indexInLayerL)+' indexInLayerR='+str(self.__getitem__(__index__).indexInLayerR)+' value='+str(self.__getitem__(__index__).value))
+
+
+class NeuralNetwork:
+    def __init__(self, pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron):
+        self.nl = NeuronList(pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron)
+        self.wl = WeightList(pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron)
+
+    def __calcValue(self, pGlobalIndex):
+        firstGlobalIndexInLayer=getFirstGlobalIndexInLayer(self.nl.list[pGlobalIndex].layer - 1)
+        for index in range(getFirstGlobalIndexInLayer(firstGlobalIndexInLayer, firstGlobalIndexInLayer+pCountIndexInLayer)):
+            value= self.nl.list[index].inputValue*self.wl.list[index].value
+
 
     def __runCalc__(self, pCountIndexInLayer, nCountInternalLayer, bHaveMovNeuron):
         #функция расчета
-        for nvIndex in range(1, nCountInternalLayer + 2):  #Это цикл по слоям (1...N), те не включая входной слой
-            for j in range(pCountIndexInLayer): #Цикл по "всем" узлам внутри слоя
-                print(self.neuronList.__getitem__((nvIndex+1)*(j+1))) #Привели к глобальному индексу и нашли значение
-                print(self.neuronList.)
+        for vGlobalIndex in range(pCountIndexInLayer, self.nl.count):
+           print( " Глобальный индекс=" + str(vGlobalIndex))
+           print(self.nl.list[vGlobalIndex].inputValue)
+
+        #  for nvIndex in range(1, nCountInternalLayer + 2):  #Это цикл по слоям (1...N), те не включая входной слой
+        #      vStr ="Слой="+str(nvIndex)
+        #      for j in range(pCountIndexInLayer): #Цикл по "всем" узлам внутри слоя
+        #          vGlobalIndex=pCountIndexInLayer+(nvIndex)*(j+1)
+        #          print(vStr + " узел=" + str(j)+" Глобальный индекс="+str(vGlobalIndex))
+        #          #print("глобальный индекс"+str(vGlobalIndex))
+        #          print(self.nl.list[vGlobalIndex].inputValue)#Привели к глобальному индексу и нашли значение
+        #          if nvIndex == nCountInternalLayer+1:
+        #              break
+                #print(self.neuronList.__getitem__((nvIndex+1)*(j+1)))
+                #print(self.neuronList.)
 
 
 
